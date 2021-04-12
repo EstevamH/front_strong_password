@@ -1,1 +1,67 @@
 /* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+h1 {
+  font-weight: bold;
+  margin: 0;
+  font-size: 24px;
+}
+
+h2 {
+  text-align: center;
+}
+
+p {
+  font-size: 12px;
+  font-weight: 100;
+  line-height: 20px;
+  letter-spacing: 0.5px;
+  margin: 20px 0 30px;
+}
+
+span {
+  font-size: 14px;
+}
+
+a {
+  color: #333;
+  font-size: 14px;
+  text-decoration: none;
+  margin: 15px 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+mat-icon {
+  color: #ff4b2b;
+  cursor: pointer;
+}
+
+button {
+  cursor: pointer;
+}
+
+.tooltip {
+  white-space: pre-line;
+}

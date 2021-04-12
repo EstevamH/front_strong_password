@@ -1,0 +1,81 @@
+<main>
+  <div [class]="getContainerStyle()" id="container">
+    <div class="form-container sign-up-container">
+      <form [formGroup]="signUpForm" (ngSubmit)="create()">
+        <h1>Criar conta</h1>
+        <p>Insira seus dados para começar a usar nossa aplicação</p>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Nome</mat-label>
+          <input matInput placeholder="João Silva" formControlName="name">
+          <mat-error *ngIf="signUpForm.controls['name'].invalid">{{getErrorMessage(signUpForm.controls['name'])}}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput placeholder="email@email.com" formControlName="email">
+          <mat-error *ngIf="signUpForm.controls['email'].invalid">{{getErrorMessage(signUpForm.controls['email'])}}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>
+            Senha
+          </mat-label>
+          <input matInput placeholder="******" [type]="hide ? 'password' : 'text'" formControlName="password">
+          <mat-error *ngIf="signUpForm.controls['password'].invalid">
+            {{getErrorMessage(signUpForm.controls['password'])}}</mat-error>
+          <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+        <p class="about">
+          Sobre a senha
+          <mat-icon matTooltip="Senha deve conter entre 6 e 12 dígitos;
+            Uma letra minúscula;
+            Uma letra maiúscula;
+            Um número e um caractere especial (Ex: @#$%&)" matTooltipClass="tooltip" matTooltipPosition="right">help
+          </mat-icon>
+        </p>
+        <button class="submit">Cadastrar-se</button>
+      </form>
+    </div>
+    <div class="form-container sign-in-container">
+      <form [formGroup]="signInForm" (ngSubmit)="login()">
+        <h1>Fazer login</h1>
+        <p>Insira seus dados para logar na aplicação</p>
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput placeholder="email@email.com" formControlName="email">
+          <mat-error *ngIf="signInForm.controls['email'].invalid">{{getErrorMessage(signInForm.controls['email'])}}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Senha</mat-label>
+          <input matInput placeholder="******" type="password" formControlName="password">
+          <mat-error *ngIf="signInForm.controls['password'].invalid">
+            {{getErrorMessage(signInForm.controls['password'])}}</mat-error>
+        </mat-form-field>
+        <button class="submit">Entrar</button>
+      </form>
+    </div>
+    <div class="overlay-container">
+      <div class="overlay">
+        <div class="overlay-panel overlay-left">
+          <h1>Já possui conta?</h1>
+          <p>Para se conectar, por favor, faça seu login</p>
+          <button class="submit ghost" id="signIn" (click)="setContainerStyle('')">Login</button>
+        </div>
+        <div class="overlay-panel overlay-right">
+          <h1>Olá, amigo!</h1>
+          <p>Cadastre-se agora para conectar-se conosco</p>
+          <button class="submit ghost" id="signUp"
+            (click)="setContainerStyle('right-panel-active')">Cadastrar-se</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

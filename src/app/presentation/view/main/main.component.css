@@ -1,0 +1,30 @@
+mat-toolbar {
+  background: -webkit-linear-gradient(to right, #ff4b2b, #ff416c);
+  background: linear-gradient(to right, #ff4b2b, #ff416c);
+}
+
+h1,
+mat-icon {
+  color: #fff;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+.menu-card {
+  max-width: 400px;
+}
+
+.mat-card-header {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.menu-card-header-image {
+  background-color: #ccc;
+}
+
+::ng-deep .mat-menu-content:not(:empty) {
+  padding: 0 !important;
+}

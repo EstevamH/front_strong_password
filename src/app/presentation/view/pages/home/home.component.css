@@ -1,0 +1,14 @@
+main {
+  background: #f6f5f7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-family: "Montserrat", sans-serif;
+  height: calc(100vh - 64px);
+}
+
+p {
+  margin-top: 3rem;
+  font-size: 10rem;
+}
