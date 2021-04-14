@@ -1,15 +1,11 @@
+import { UserEntity } from './../../../../domain/entities/user-entity';
 import { Component, OnInit } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { IUserRepository } from '../../../../domain/interfaces/repository/iuser-repository';
 import { AuthService } from 'src/app/infra/auth/auth.service';
 import { Router } from '@angular/router';
+import { IUserController } from 'src/app/domain/interfaces/controllers/user/iuser-controller';
+import { LoginFormValidatorService } from 'src/app/domain/usecases/user/validation/user-login-form-validator.service';
 
 @Component({
   selector: 'app-login',
@@ -17,103 +13,65 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-  title = 'strong-password';
   signUpForm: FormGroup;
   signInForm: FormGroup;
-  containerClass = 'container';
+
   hide = true;
+  isLoginForm: boolean = false;
 
   constructor(
-    private repository: IUserRepository,
     private fb: FormBuilder,
     private router: Router,
     private authService: AuthService,
-    private snackbar: MatSnackBar
+    private userController: IUserController,
+    private loginFormValidator: LoginFormValidatorService
   ) {}
 
   ngOnInit() {
-    this.createForm();
+    this.signUpForm = this.createForm();
+    this.signUpForm.addControl('name', this.fb.control(''));
+
+    this.signInForm = this.createForm();
+    this.loginFormValidator.setForm(this.signUpForm);
   }
 
-  private createForm() {
-    this.signUpForm = this.fb.group({
-      name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+  createForm() {
+    return this.fb.group({
+      email: [''],
+      password: [''],
     });
-
-    this.signInForm = this.fb.group({
-      email: ['', Validators.required],
-      password: ['', Validators.required],
-    });
-  }
-
-  setContainerStyle(style: string) {
-    const clss = 'container';
-    this.containerClass = `${clss} ${style}`;
-  }
-
-  getContainerStyle() {
-    return this.containerClass;
   }
 
   create() {
-    if (this.signUpForm.invalid) {
-      this.signUpForm.markAllAsTouched();
-      return;
-    }
-    this.repository.create(this.signUpForm.getRawValue()).subscribe(
-      (response) => {
-        this.snackbar.open('Cadastro realizado com sucesso!', 'Fechar', {
-          duration: 3000,
-        });
-        this.setContainerStyle('');
-      },
-      (err) => {
-        const { error } = err;
-        this.snackbar.open(
-          `${error.message || 'Falha de Conexão. Tente Novamente'}`,
-          'Fechar',
-          {
-            duration: 4500,
-          }
-        );
-      }
+    this.signUpForm.markAllAsTouched();
+    this.userController.create(this.signUpForm.value).subscribe(
+      (user: UserEntity) => this.createResponse(user),
+      (err) => console.log(err)
     );
   }
 
   login() {
-    if (this.signInForm.invalid) {
-      this.signInForm.markAllAsTouched();
-      return;
-    }
-
-    this.repository.login(this.signInForm.getRawValue()).subscribe(
-      (user: any) => {
-        this.authService.setCredentials(user);
-        this.router.navigateByUrl('/home');
-      },
-      (err) => {
-        const { error } = err;
-        this.snackbar.open(
-          `${error.message || 'Falha de Conexão. Tente Novamente'}`,
-          'Fechar',
-          {
-            duration: 3000,
-          }
-        );
-      }
+    this.userController.login(this.signUpForm.value).subscribe(
+      (user: UserEntity) => this.loginResponse(user),
+      (err) => console.log(err)
     );
   }
 
-  getErrorMessage(control: AbstractControl) {
-    switch (control.invalid) {
-      case control.hasError('required'): {
-        return 'Campo obrigatório';
-      }
-      case control.hasError('email'): {
-        return 'Email inválido';
-      }
+  createResponse(user: UserEntity) {
+    if (user) {
+      console.log('Criado com sucesso');
+      this.isLoginForm = !this.isLoginForm;
+    } else {
+      console.log('Falha na conexão. Tente novamente!');
+    }
+  }
+
+  loginResponse(user: UserEntity) {
+    if (user) {
+      this.authService.setCredentials(user);
+      this.router.navigateByUrl('/home');
+    } else {
+      console.log('Usuário e/ou senha inválido. Tente novamente!');
     }
   }
 }
