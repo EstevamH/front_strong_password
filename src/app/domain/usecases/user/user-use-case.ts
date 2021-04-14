@@ -27,8 +27,7 @@ export class UserUseCase implements IUserUseCase {
   }
 
   login(param: UserEntity): Observable<UserEntity> {
-    if (this._validForm) return this.userRepository.login(param);
-    else return throwError('Formulário Inválido');
+    return this.userRepository.login(param);
   }
 
   logout(): Observable<boolean> {
