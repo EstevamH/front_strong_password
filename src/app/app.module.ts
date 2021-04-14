@@ -7,6 +7,7 @@ import { AppMaterialModule } from './app-material.module';
 import { DataModule } from './data/data.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PresentationModule } from './presentation/presentation.module';
+import { DomainModule } from './domain/domain.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,6 +18,7 @@ import { PresentationModule } from './presentation/presentation.module';
     AppMaterialModule,
     DataModule,
     PresentationModule,
+    DomainModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
