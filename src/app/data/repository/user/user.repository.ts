@@ -3,7 +3,6 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { IUserRepository } from './../../../domain/interfaces/repository/iuser-repository';
-import { UserEntity } from '../../../domain/entities/user-entity';
 
 @Injectable({ providedIn: 'root' })
 export class UserRepository implements IUserRepository {
@@ -11,11 +10,11 @@ export class UserRepository implements IUserRepository {
 
   constructor(private http: HttpClient) {}
 
-  create(user: UserEntity): Observable<UserEntity> {
+  create(user: any): Observable<any> {
     return this.http.post(`${this.BASE_URL}`, user);
   }
 
-  login(user: UserEntity): Observable<UserEntity> {
+  login(user: any): Observable<any> {
     let params = new HttpParams()
       .append('email', user.email)
       .append('password', user.password);

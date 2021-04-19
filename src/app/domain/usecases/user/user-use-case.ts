@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { UserEntity } from '../../entities/user-entity';
 
 import { IUserRepository } from '../../interfaces/repository/iuser-repository';
 import { IUserUseCase } from '../../interfaces/usecases/user/iuser-use-case';
@@ -17,7 +16,7 @@ export class UserUseCase implements IUserUseCase {
     private userLoginValidate: LoginFormValidatorService
   ) {}
 
-  create(param: UserEntity): Observable<UserEntity> {
+  create(param: any): Observable<any> {
     const errors = this.userLoginValidate.isValidFields(param);
     if (errors.length == 0) {
       return this.userRepository.create(param);
@@ -26,7 +25,7 @@ export class UserUseCase implements IUserUseCase {
     }
   }
 
-  login(param: UserEntity): Observable<UserEntity> {
+  login(param: any): Observable<any> {
     return this.userRepository.login(param);
   }
 

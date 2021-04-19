@@ -1,4 +1,3 @@
-import { UserEntity } from './../../../../domain/entities/user-entity';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -6,6 +5,8 @@ import { AuthService } from 'src/app/infra/auth/auth.service';
 import { Router } from '@angular/router';
 import { IUserController } from 'src/app/domain/interfaces/controllers/user/iuser-controller';
 import { LoginFormValidatorService } from 'src/app/domain/usecases/user/validation/user-login-form-validator.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -24,7 +25,8 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private userController: IUserController,
-    private loginFormValidator: LoginFormValidatorService
+    private loginFormValidator: LoginFormValidatorService,
+    private snackbar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -37,7 +39,7 @@ export class LoginComponent implements OnInit {
 
   createForm() {
     return this.fb.group({
-      email: [''],
+      email: ['', [Validators.email]],
       password: [''],
     });
   }
@@ -45,28 +47,39 @@ export class LoginComponent implements OnInit {
   create() {
     this.signUpForm.markAllAsTouched();
     this.userController.create(this.signUpForm.value).subscribe(
-      (user: UserEntity) => this.createResponse(user),
-      (err) => console.log(err)
+      (user: any) => this.createResponse(user),
+      (err) => this.errorResponse(err)
     );
   }
 
   login() {
     this.userController.login(this.signUpForm.value).subscribe(
-      (user: UserEntity) => this.loginResponse(user),
-      (err) => console.log(err)
+      (user: any) => this.loginResponse(user),
+      (err) => this.errorResponse(err)
     );
   }
 
-  createResponse(user: UserEntity) {
+  createResponse(user: any) {
     if (user) {
-      console.log('Criado com sucesso');
+      this.snackbar.open('Criado com sucesso', 'Fechar', {
+        duration: 3000,
+      });
       this.isLoginForm = !this.isLoginForm;
     } else {
-      console.log('Falha na conexão. Tente novamente!');
+      this.snackbar.open('Falha na conexão. Tente novamente!', 'Fechar', {
+        duration: 3000,
+      });
     }
   }
 
-  loginResponse(user: UserEntity) {
+  errorResponse(error: HttpErrorResponse) {
+    const msg = error.error.message || 'Falha na conexão. Tente novamente!';
+    this.snackbar.open(msg, 'Fechar', {
+      duration: 3000,
+    });
+  }
+
+  loginResponse(user: any) {
     if (user) {
       this.authService.setCredentials(user);
       this.router.navigateByUrl('/home');

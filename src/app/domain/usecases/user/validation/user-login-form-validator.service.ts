@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { ValidationError } from '../../../interfaces/validation/validation.error';
 import { ValidationComposite } from '../../../../validation/validation-composite/validation-composite';
 import { ValidationBuilder } from '../../../../validation/builder/validation-builder';
-import { UserEntity } from '../../../entities/user-entity';
 import { FormGroup } from '@angular/forms';
 
 @Injectable({
@@ -15,7 +14,7 @@ export class LoginFormValidatorService {
 
   constructor() {}
 
-  isValidFields(param: UserEntity): ValidationError[] {
+  isValidFields(param: any): ValidationError[] {
     Object.keys(param).forEach((item) => {
       let error = this.rules().validate(item, param[item]);
       if (error) {
@@ -43,7 +42,7 @@ export class LoginFormValidatorService {
 
   private rules(): ValidationComposite {
     return ValidationComposite.build([
-      ...ValidationBuilder.field('email').required().email().build(),
+      ...ValidationBuilder.field('email').required().build(),
       ...ValidationBuilder.field('password').required().build(),
     ]);
   }

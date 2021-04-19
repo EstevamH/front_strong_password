@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 
 import { IUserController } from '../../../domain/interfaces/controllers/user/iuser-controller';
-import { UserEntity } from '../../../domain/entities/user-entity';
 import { Observable } from 'rxjs';
 import { IUserUseCase } from 'src/app/domain/interfaces/usecases/user/iuser-use-case';
 
@@ -11,11 +10,11 @@ import { IUserUseCase } from 'src/app/domain/interfaces/usecases/user/iuser-use-
 export class UserControllerService implements IUserController {
   constructor(private userUseCase: IUserUseCase) {}
 
-  create(param: UserEntity): Observable<UserEntity> {
+  create(param: any): Observable<any> {
     return this.userUseCase.create(param);
   }
 
-  login(param: UserEntity): Observable<UserEntity> {
+  login(param: any): Observable<any> {
     return this.userUseCase.login(param);
   }
 
